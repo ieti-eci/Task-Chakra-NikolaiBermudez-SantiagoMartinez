@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useData } from "../providers/DataProvider";
 import { TaskItem } from "./TaskItem";
+import { ApiLookup, useData } from "../providers/DataProvider";
 
 export const TaskList = () => {
   const { data, setData } = useData();
@@ -25,10 +25,20 @@ export const TaskList = () => {
       isCompleted: false,
       name: name,
     };
-    setData((prev) => ({ ...prev, tasks: [...tasks, newTask] }));
+    ApiLookup.lookup('POST','api/task',(data)=>{
+      ApiLookup.lookup('GET','api/task/all',(data)=>{
+        setData((prev)=>({...prev,tasks:data.data}));
+        
+      },'');
+    },newTask);
   };
 
   const handleSubmit = (event) => {
+    ApiLookup.lookup('GET','api/task/all',(data)=>{
+      setData((prev)=>({...prev,tasks:data.data}));
+      
+    },'');
+
     event.preventDefault();
     newTask(textValue);
   };

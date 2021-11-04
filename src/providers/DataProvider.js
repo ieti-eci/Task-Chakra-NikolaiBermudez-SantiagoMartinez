@@ -1,28 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export const tasks = [
-  {
-    id: "1",
-    isCompleted: false,
-    name: "Arreglar el checklist del edit",
-  },
-  {
-    id: "2",
-    isCompleted: false,
-    name: "Limpiar el campo del create task cuando se crea tarea",
-  },
-  {
-    id: "3",
-    isCompleted: false,
-    name: "Mejorar el UI usando CSS",
-  }, 
-  {
-    id: "4",
-    isCompleted: false,
-    name: "Modificar la estructura del proyecto(UI y lógica) para que el Task tenga los siguientes campos: [name, description,assignedTo, dueDate, [status(TODO, IN_PROGRESS,REVIEW, DONE)]",
-  }
-];
+export const tasks = [];
 
 const initialData = { tasks };
 
@@ -83,6 +62,7 @@ export class ApiLookup{
       url: BASE_URL + endpoint,
       data:data
     }).then((data)=>callback(data)).catch((error)=>(console.log(error)))
+    axios.defaults.headers.common['Authorization'] = "Bearer "+this.getCookie('taskToken');
 
   }
 }
